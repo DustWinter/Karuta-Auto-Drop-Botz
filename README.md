@@ -1,3 +1,6 @@
+# A NEW VERSION IS BEING DEVELOPED, OLDMAIN.PY IS OLD SCRIPT IT IS STILL WORKING.
+# I AM JUST ADDING IMPROVEMENTS AND NEW FUNCTIONS
+
 # Karuta Auto Drop Bot
 
 This project is a bot designed to automate the process of dropping and reacting to Karuta cards in a Discord channel. The bot uses `requests` library to interact with the Discord API.
@@ -32,7 +35,7 @@ This project is a bot designed to automate the process of dropping and reacting 
 
 1. Run the bot:
     ```sh
-    python main.py
+    python oldMain.py
     ```
 
 2. Use the GUI to add Discord accounts and configure the bot settings.
