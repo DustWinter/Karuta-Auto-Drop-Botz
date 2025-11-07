@@ -14,13 +14,15 @@ class Slave:
         header = {'Authorization': self.token}
         requests.post(url, data=payload, headers=header)
         time.sleep(0.25)
+        return #messageId
         
     def grabCard(self,messageID,emoji):
         url = f"https://discord.com/api/v9/channels/{self.dropChannel}/messages/{messageID}/reactions/{emoji}/@me"
         header = {'Authorization': self.token}
         requests.put(url, headers=header)
         time.sleep(0.25)
-    
+        #return [cardName,self.token] 
+
     def getID(self,cardName):
         url = f"https://discord.com/api/v9/channels/{self.tradeChannel}/messages"
         payload = {'content': 'k!collection character={cardName}'}

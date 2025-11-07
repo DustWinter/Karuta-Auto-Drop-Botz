@@ -12,13 +12,15 @@ class MiddleMan:
         self.dropChannel = drop
         self.ownerChannel = owner
         self.isMessaging = False
+        # getWishList(self)
     
     def getWishList(self):
         with open("wishlist.json",'r') as wishListFile:
             wishListData = json.load(wishListFile)
         self.wishList = wishListData["wishList"]
     
-    def checkWishList(self,cardName):
+    def checkWishList(self): # will be changed to fetch last 3 msgs
+        cardName = [] # fetch card Names
         if cardName in self.wishList:
             return True
         return False
