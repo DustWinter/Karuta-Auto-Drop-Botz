@@ -7,38 +7,44 @@ class MiddleMan:
         self.token = Token
         self.name = Name
         self.wishList = []
-        self.collection = []
+        self.collection = self.getCollection()
         self.tradeChannel = trade
         self.dropChannel = drop
         self.ownerChannel = owner
         self.isMessaging = False
-        # getWishList(self)
+        self.userID = self.getUserId()
+        self.getWishList()
     
     def getWishList(self):
         with open("wishlist.json",'r') as wishListFile:
             wishListData = json.load(wishListFile)
         self.wishList = wishListData["wishList"]
     
-    def checkWishList(self): # will be changed to fetch last 3 msgs
-        cardName = [] # fetch card Names
+    def checkWishList(self, cardName):
         if cardName in self.wishList:
             return True
         return False
+    def getUserId(self):
+        url = f"https://discord.com/api/v9/users/@me"
+        header = {"Authorization":self.token}
+        r = requests.get(url,headers=header)
+        data = json.load(r.text)
+        return data["id"]
     
     def stealCardFromSlave(self, cardName, slave):
         cardID = slave.GetID(cardName)
-        slave.InitTrade(cardID)
+        slave.InitTrade(cardID,self.userID)
         # AcceptTrade
         edition = self.getEdition(cardID)
-        self.collection.append([cardName,cardID,edition]) # maybe will make it a json file for consistent tracking
+        self.collection.append([cardName,cardID,edition])
+        
+        with open("collection.json","w") as f:
+            json.dump({"collection":self.collection},f)
     
     def giveCardToEmployer(self,cardID):
         pass
     
     def getCollection(self):
-        for card in self.collection:
-            url = f"https://discord.com/api/v9/channels/{self.ownerChannel}/messages"
-            payload = {'content': f'Card id : {card[1]}\nCard name : {card[0]}\nCard edition : {card[2]}'}
-            header = {'Authorization': self.token}
-            requests.post(url, data=payload, headers=header)
-            time.sleep(0.25)
+        with open("collection.json",'r') as f:
+            data = json.load(f)
+        return data["collection"]
