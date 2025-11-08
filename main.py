@@ -25,11 +25,10 @@ class BotManager:
         self.Slaves = [Slave(name=account[0],token=account[1],trade=trade,drop=drop) for account in accounts]
         self.middleMan = MiddleMan(Token=data["token"],Name=data["name"],trade=trade,drop=drop,owner=owner)
 
-    def getTime():
-        with open("accounts.json",'r') as f:
-            data = json.load(f)
-        accounts = len(data["accounts"])
+    def getTime(self):
+        accounts = len(self.Slaves)
         return 10/(accounts//3)
+    
     def checkFiles():
         if not os.path.exists("accounts.json"):
             with open("accounts.json", "w") as f:
@@ -81,7 +80,7 @@ def run():
     grabber = [0,1,2]
     cardName = []
     interval = bot.getTime()
-    
+
     while True:
 
         for i in range (len(bot.Slaves)):
