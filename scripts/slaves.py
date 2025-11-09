@@ -25,7 +25,7 @@ class Slave:
         time.sleep(0.25)
         r= requests.get(f"https://discord.com/api/v9/channels/{self.dropChannel}/messages?limit=1")
         data = json.load(r.text)
-        return [self.getName(data["0"]["content"]),self] #return [cardName,currentSlave] 
+        return [self.getName(data["0"]["content"]),self] #return [cardName,currentSlave]
         
 
     def getID(self,cardName):
@@ -34,6 +34,9 @@ class Slave:
         header = {'Authorization': self.token}
         requests.post(url, data=payload, headers=header)
         time.sleep(0.25)
+        r = requests.get("https://discord.com/api/v9/channels/{self.tradeChannel}/messages?limit=1",headers=header)
+        data = json.load(r.text)
+        return "`".split(data["0"]["embeds"]["0"]["description"])[1]
     
     def InitTrade(self,cardID,userID):
         url = f"https://discord.com/api/v9/channels/{self.tradeChannel}/messages"

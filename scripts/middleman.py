@@ -1,7 +1,7 @@
 import requests
 import time
 import json
-
+from pathlib import Path
 class MiddleMan:
     def __init__(self, Token, Name,trade,drop,owner):
         self.token = Token
@@ -14,9 +14,11 @@ class MiddleMan:
         self.isMessaging = False
         self.userID = self.getUserId()
         self.getWishList()
+        root = Path(__file__).resolve().parent.parent
+        self.path = root / "userdata"
     
     def getWishList(self):
-        with open("wishlist.json",'r') as wishListFile:
+        with open(self.path / "wishlist.json",'r') as wishListFile:
             wishListData = json.load(wishListFile)
         self.wishList = wishListData["wishList"]
     
@@ -35,16 +37,16 @@ class MiddleMan:
         cardID = slave.GetID(cardName)
         slave.InitTrade(cardID,self.userID)
         # AcceptTrade
-        edition = self.getEdition(cardID)
-        self.collection.append([cardName,cardID,edition])
-        
-        with open("collection.json","w") as f:
+        info = self.getInfoCard(cardID)
+        edition,quality = info[0], info[1]
+        self.collection.append([cardName,cardID,edition,quality])
+        with open(self.path / "collection.json","w") as f:
             json.dump({"collection":self.collection},f)
     
     def giveCardToEmployer(self,cardID):
         pass
     
     def getCollection(self):
-        with open("collection.json",'r') as f:
+        with open(self.path / "collection.json",'r') as f:
             data = json.load(f)
         return data["collection"]
